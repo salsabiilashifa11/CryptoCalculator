@@ -30,7 +30,7 @@ def saveKeyPaillier(n, g, m, l, path):
     public.write(str(g)+ " " + str(n))
     public.close()
     private = open(path+".pri", 'w')
-    private.write(str(l) + ' ' + str(m))
+    private.write(str(l) + ' ' + str(m) + ' ' + str(n))
     private.close()
 
 def loadPublicPaillier(path):

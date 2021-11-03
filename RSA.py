@@ -45,7 +45,7 @@ class RSA:
     def encrypt(self, plaintext, e, n):
         # print(len(str(n))-1)
         # plain = pt2block(plaintext, len(str(n))-1)
-        plain = pt2block(plaintext, (len(str(n))-1))
+        plain = pt2block(plaintext, (len(str(n)))-1)
         result = []
         resString = ''
         for block in plain:
@@ -77,12 +77,12 @@ def main():
     print(ct)
     # print(cts)
     # c = cipher2IntArr(cts, len(str(rsa.n)))
-    c = cipher2IntArr(cts, (len(str(rsa.n))-1))
+    c = cipher2IntArr(cts, (len(str(rsa.n))))
     print(c)
     for i in c:
         print (len(str(i)))
     # print(c==ct)
-    print(rsa.decrypt(c, rsa.d, rsa.n))
+    print(rsa.decrypt(ct, rsa.d, rsa.n))
 
 
 if __name__ == '__main__':

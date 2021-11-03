@@ -47,7 +47,7 @@ font-weight: bold;
 </string>
     </property>
     <property name="text">
-     <string>Encrypt</string>
+     <string>Decrypt</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -57,7 +57,7 @@ font-weight: bold;
     <property name="geometry">
      <rect>
       <x>600</x>
-      <y>480</y>
+      <y>440</y>
       <width>161</width>
       <height>51</height>
      </rect>
@@ -69,7 +69,7 @@ border-radius: 25px;
 </string>
     </property>
     <property name="text">
-     <string>Encrypt!</string>
+     <string>Decrypt!</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="inputButton_1">
@@ -140,7 +140,7 @@ color: rgb(116, 116, 118);
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="Factor1KeyField">
+   <widget class="QLineEdit" name="publicKeyField">
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -230,7 +230,7 @@ font: 15pt &quot;Product Sans&quot;;
 color: rgb(116, 116, 118);</string>
     </property>
     <property name="text">
-     <string>Message file</string>
+     <string>Cipher file</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -251,7 +251,7 @@ font: 15pt &quot;Product Sans&quot;;
 color: rgb(116, 116, 118);</string>
     </property>
     <property name="text">
-     <string>Message text</string>
+     <string>Cipher text</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -272,7 +272,7 @@ font: 15pt &quot;Product Sans&quot;;
 color: rgb(116, 116, 118);</string>
     </property>
     <property name="text">
-     <string>Factor 1 (P)</string>
+     <string>Public key (N)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -366,7 +366,7 @@ color: rgb(116, 116, 118);</string>
     <property name="geometry">
      <rect>
       <x>650</x>
-      <y>530</y>
+      <y>490</y>
       <width>71</width>
       <height>31</height>
      </rect>
@@ -444,7 +444,7 @@ color: rgb(96, 99, 103);
      <string>Keyboard</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="Factor2KeyField">
+   <widget class="QLineEdit" name="privateKeyField">
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -475,7 +475,7 @@ font: 15pt &quot;Product Sans&quot;;
 color: rgb(116, 116, 118);</string>
     </property>
     <property name="text">
-     <string>Factor 2 (Q)</string>
+     <string>Private key (D)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -502,7 +502,7 @@ color: rgb(116, 116, 118);</string>
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="PublicKeyField">
+   <widget class="QLineEdit" name="KeyFileName">
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -518,69 +518,11 @@ color: rgb(116, 116, 118);
 </string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_11">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>400</y>
-      <width>171</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgba(255, 255, 255, 0);
-font: 15pt &quot;Product Sans&quot;;
-color: rgb(116, 116, 118);</string>
-    </property>
-    <property name="text">
-     <string>Public Key (D)</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_18">
-    <property name="geometry">
-     <rect>
-      <x>510</x>
-      <y>400</y>
-      <width>16</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgba(255, 255, 255, 0);
-font: 15pt &quot;Product Sans&quot;;
-color: rgb(116, 116, 118);</string>
-    </property>
-    <property name="text">
-     <string>:</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="KeyFileName">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>430</y>
-      <width>291</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius: 2px;
-padding-left: 10px;
-color: rgb(116, 116, 118);
-</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_31">
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>440</y>
+      <y>400</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -591,7 +533,7 @@ font: 15pt &quot;Product Sans&quot;;
 color: rgb(116, 116, 118);</string>
     </property>
     <property name="text">
-     <string>Key file name</string>
+     <string>Output file name</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -601,7 +543,7 @@ color: rgb(116, 116, 118);</string>
     <property name="geometry">
      <rect>
       <x>510</x>
-      <y>440</y>
+      <y>400</y>
       <width>16</width>
       <height>20</height>
      </rect>
@@ -622,7 +564,7 @@ color: rgb(116, 116, 118);</string>
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>600</y>
+      <y>560</y>
       <width>591</width>
       <height>181</height>
      </rect>
@@ -634,7 +576,7 @@ color: rgb(116, 116, 118);
 </string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="inputButton_5">
+   <widget class="QRadioButton" name="inputButton_4">
     <property name="geometry">
      <rect>
       <x>550</x>
@@ -715,7 +657,7 @@ color: rgb(116, 116, 118);</string>
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="messageFileButton_2">
+   <widget class="QPushButton" name="keyFileButton">
     <property name="geometry">
      <rect>
       <x>830</x>

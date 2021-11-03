@@ -614,7 +614,7 @@ font: 15pt &quot;Product Sans&quot;;
 color: rgb(116, 116, 118);</string>
     </property>
     <property name="text">
-     <string>Key file name</string>
+     <string>Output file name</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -732,13 +732,13 @@ font: 15pt &quot;Product Sans&quot;;
 color: rgb(116, 116, 118);</string>
     </property>
     <property name="text">
-     <string>Message file</string>
+     <string>Key file</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="messageFileButton_2">
+   <widget class="QPushButton" name="keyFileButton">
     <property name="geometry">
      <rect>
       <x>830</x>

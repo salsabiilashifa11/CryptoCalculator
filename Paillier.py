@@ -14,20 +14,22 @@ class Paillier:
         self.lmd = None
         self.miu = None
     
-    def generateKeyPair(self, p = 0, q = 0):
-        Terminate = False
-        while not(Terminate):
-            p = randprime(pow(2, self.keySize-1)+1, pow(2,self.keySize)-1)
-            q = randprime(pow(2, self.keySize-1)+1, pow(2,self.keySize)-1)
-            if (gcd(p*q, (p-1)*(q-1)) == 1):
-                Terminate  = True
+    def generateKeyPair(self, p = 1, q = 1, g = 1):
+        if (p == 1) and (q == 1):
+            Terminate = False
+            while not(Terminate):
+                p = randprime(pow(2, self.keySize-1)+1, pow(2,self.keySize)-1)
+                q = randprime(pow(2, self.keySize-1)+1, pow(2,self.keySize)-1)
+                if (gcd(p*q, (p-1)*(q-1)) == 1):
+                    Terminate  = True
         
         n = p*q
         self.n_sq = pow(n,2)
         lmd = lcm(p-1, q-1)
 
-        # Generate random integer
-        g = random.randint(1, pow(n,2)-1)
+        if (g == 1):
+            # Generate random integer
+            g = random.randint(1, pow(n,2)-1)
 
         # declaring lambda for function L
         x = (pow(g, lmd, pow(n,2))-1)//n
@@ -81,8 +83,8 @@ def main():
     f.close()
     pail.generateKeyPair()
     saveKeyPaillier(pail.n, pail.g, pail.miu, pail.lmd, 'keyPail')
-    ct = pail.encrypt(pt, pail.g)
-    print(ct)
+    ct, cts = pail.encrypt(pt, pail.g)
+    # print(ct)
     print(pail.decrypt(ct, pail.lmd, pail.miu, pail.n))
 
 

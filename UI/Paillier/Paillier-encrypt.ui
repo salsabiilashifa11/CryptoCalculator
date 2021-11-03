@@ -33,7 +33,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>100</x>
       <y>30</y>
       <width>241</width>
       <height>41</height>
@@ -56,8 +56,8 @@ font-weight: bold;
    <widget class="QPushButton" name="goButton">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>440</y>
+      <x>600</x>
+      <y>480</y>
       <width>161</width>
       <height>51</height>
      </rect>
@@ -75,7 +75,7 @@ border-radius: 25px;
    <widget class="QRadioButton" name="inputButton_1">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>550</x>
       <y>110</y>
       <width>61</width>
       <height>20</height>
@@ -101,7 +101,7 @@ background-color: rgba(255, 255, 255, 0);
    <widget class="QRadioButton" name="inputButton_2">
     <property name="geometry">
      <rect>
-      <x>580</x>
+      <x>640</x>
       <y>110</y>
       <width>101</width>
       <height>20</height>
@@ -124,7 +124,7 @@ color: rgb(96, 99, 103);
    <widget class="QLineEdit" name="inputFileField">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>530</x>
       <y>150</y>
       <width>291</width>
       <height>31</height>
@@ -140,12 +140,12 @@ color: rgb(116, 116, 118);
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="stegoKeyField">
+   <widget class="QLineEdit" name="Factor1KeyField">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>280</y>
-      <width>201</width>
+      <x>530</x>
+      <y>310</y>
+      <width>291</width>
       <height>31</height>
      </rect>
     </property>
@@ -159,7 +159,7 @@ color: rgb(116, 116, 118);
    <widget class="QLineEdit" name="inputKeyboardField">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>530</x>
       <y>190</y>
       <width>291</width>
       <height>31</height>
@@ -175,10 +175,10 @@ color: rgb(116, 116, 118);
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="inputFileButton">
+   <widget class="QPushButton" name="messageFileButton">
     <property name="geometry">
      <rect>
-      <x>770</x>
+      <x>830</x>
       <y>150</y>
       <width>71</width>
       <height>31</height>
@@ -197,7 +197,7 @@ border-radius: 15px;
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>320</x>
       <y>110</y>
       <width>171</width>
       <height>20</height>
@@ -218,7 +218,7 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>320</x>
       <y>160</y>
       <width>171</width>
       <height>20</height>
@@ -239,7 +239,7 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>320</x>
       <y>200</y>
       <width>171</width>
       <height>20</height>
@@ -260,8 +260,8 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_10">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>290</y>
+      <x>320</x>
+      <y>320</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -281,7 +281,7 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_12">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>510</x>
       <y>200</y>
       <width>16</width>
       <height>20</height>
@@ -302,7 +302,7 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>510</x>
       <y>160</y>
       <width>16</width>
       <height>20</height>
@@ -323,7 +323,7 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_15">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>510</x>
       <y>110</y>
       <width>16</width>
       <height>20</height>
@@ -344,8 +344,8 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_17">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>290</y>
+      <x>510</x>
+      <y>320</y>
       <width>16</width>
       <height>20</height>
      </rect>
@@ -365,8 +365,8 @@ color: rgb(116, 116, 118);</string>
    <widget class="QPushButton" name="backButton">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>490</y>
+      <x>650</x>
+      <y>530</y>
       <width>71</width>
       <height>31</height>
      </rect>
@@ -385,7 +385,7 @@ border-radius: 15px;
    <widget class="QLabel" name="label_9">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>320</x>
       <y>240</y>
       <width>171</width>
       <height>20</height>
@@ -406,7 +406,7 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_16">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>510</x>
       <y>240</y>
       <width>16</width>
       <height>20</height>
@@ -427,7 +427,7 @@ color: rgb(116, 116, 118);</string>
    <widget class="QRadioButton" name="inputButton_3">
     <property name="geometry">
      <rect>
-      <x>580</x>
+      <x>640</x>
       <y>240</y>
       <width>101</width>
       <height>20</height>
@@ -447,7 +447,7 @@ color: rgb(96, 99, 103);
    <widget class="QRadioButton" name="inputButton_4">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>550</x>
       <y>240</y>
       <width>81</width>
       <height>20</height>
@@ -467,12 +467,12 @@ background-color: rgba(255, 255, 255, 0);
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="stegoKeyField_2">
+   <widget class="QLineEdit" name="Factor2KeyField">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>320</y>
-      <width>201</width>
+      <x>530</x>
+      <y>350</y>
+      <width>291</width>
       <height>31</height>
      </rect>
     </property>
@@ -486,8 +486,8 @@ color: rgb(116, 116, 118);
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>330</y>
+      <x>320</x>
+      <y>360</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -507,8 +507,8 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_19">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>330</y>
+      <x>510</x>
+      <y>360</y>
       <width>16</width>
       <height>20</height>
      </rect>
@@ -525,12 +525,12 @@ color: rgb(116, 116, 118);</string>
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="stegoKeyField_3">
+   <widget class="QLineEdit" name="PublicKeyField">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>360</y>
-      <width>201</width>
+      <x>530</x>
+      <y>390</y>
+      <width>291</width>
       <height>31</height>
      </rect>
     </property>
@@ -544,8 +544,8 @@ color: rgb(116, 116, 118);
    <widget class="QLabel" name="label_11">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>370</y>
+      <x>320</x>
+      <y>400</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -556,7 +556,7 @@ font: 15pt &quot;Product Sans&quot;;
 color: rgb(116, 116, 118);</string>
     </property>
     <property name="text">
-     <string>Public Key (g)</string>
+     <string>Public Key (G)</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -565,8 +565,8 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_18">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>370</y>
+      <x>510</x>
+      <y>400</y>
       <width>16</width>
       <height>20</height>
      </rect>
@@ -583,12 +583,12 @@ color: rgb(116, 116, 118);</string>
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="stegoKeyField_5">
+   <widget class="QLineEdit" name="KeyFileName">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>400</y>
-      <width>201</width>
+      <x>530</x>
+      <y>430</y>
+      <width>291</width>
       <height>31</height>
      </rect>
     </property>
@@ -602,8 +602,8 @@ color: rgb(116, 116, 118);
    <widget class="QLabel" name="label_31">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>410</y>
+      <x>320</x>
+      <y>440</y>
       <width>171</width>
       <height>20</height>
      </rect>
@@ -614,7 +614,7 @@ font: 15pt &quot;Product Sans&quot;;
 color: rgb(116, 116, 118);</string>
     </property>
     <property name="text">
-     <string>Key file name</string>
+     <string>Output file name</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -623,8 +623,8 @@ color: rgb(116, 116, 118);</string>
    <widget class="QLabel" name="label_30">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>410</y>
+      <x>510</x>
+      <y>440</y>
       <width>16</width>
       <height>20</height>
      </rect>
@@ -639,6 +639,122 @@ color: rgb(116, 116, 118);</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="messageOutput">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>600</y>
+      <width>591</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 2px;
+padding-left: 10px;
+color: rgb(116, 116, 118);
+</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="inputButton_5">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>240</y>
+      <width>101</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 15pt &quot;Product Sans&quot;;
+background-color: rgba(255, 255, 255, 0);
+border-radius: 4px;
+color: rgb(96, 99, 103);
+</string>
+    </property>
+    <property name="text">
+     <string>File</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_20">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>280</y>
+      <width>16</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(255, 255, 255, 0);
+font: 15pt &quot;Product Sans&quot;;
+color: rgb(116, 116, 118);</string>
+    </property>
+    <property name="text">
+     <string>:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="inputFileField_2">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>270</y>
+      <width>291</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 2px;
+padding-left: 10px;
+color: rgb(116, 116, 118);
+</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_21">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>280</y>
+      <width>171</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(255, 255, 255, 0);
+font: 15pt &quot;Product Sans&quot;;
+color: rgb(116, 116, 118);</string>
+    </property>
+    <property name="text">
+     <string>Key file</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="keyFileButton">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>270</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 15pt &quot;Product Sans&quot;;
+color: rgb(96, 99, 103);
+border-radius: 15px;
+</string>
+    </property>
+    <property name="text">
+     <string>Choose</string>
     </property>
    </widget>
   </widget>
