@@ -3,22 +3,6 @@ from sympy import randprime
 import itertools
 from math import floor
 
-# #Get all required variables
-# a = int(input("Masukkan a: "))
-# b = int(input("Masukkan b: "))
-# p = int(input("Masukkan p: "))
-
-# points = generate_points(a, b, p)
-
-# baseP = points[random.randint(0, len(points)-1)] #--> Buat nanti kalo udah bener
-# # baseP = points[5]
-
-# na = int(input("Masukkan private key 1: "))
-# pa = scalar_multiplication(a, b, p, na, baseP)
-
-# nb = int(input("Masukkan private key 2: "))
-# pb = scalar_multiplication(a, b, p, nb, baseP)
-
 #------------------CURVE------------------------
 def generate_points(a, b, p):
     xlable = dict()
@@ -225,29 +209,6 @@ def decrypt(a, b, p, baseP, nb, enckey, ciphertext):
         result += chr(decode(pm, enckey))
     return result
 
-
-#SIMUL MAIN
-# curve = curve_generator(16, "curve.txt")
-# keyA = key_generator(curve[0], curve[1], curve[2], curve[3], 8, "keyA")
-# keyB = key_generator(curve[0], curve[1], curve[2], curve[3], 8, "keyB")
-# print(keyA[0])
-# print(keyA[1])
-
-# enciphered = encrypt(curve[0], curve[1], curve[2], curve[3], keyA[0], 10, "Kita cobain teks yang agak panjang gan")
-# save_enc(enciphered, 'save_test.txt')
-# deciphered = decrypt(curve[0], curve[1], curve[2], curve[3], keyA[1], 10, enciphered)
-
-# print(enciphered)
-# print(deciphered)
-
-        
-#READ FILE
-# curve = read_curve("curve.txt")
-# keyA = (read_key("keyA.pub"), read_key("keyA.pri"))
-# enciphered = read_enc("save_test")
-# deciphered = decrypt(curve[0], curve[1], curve[2], curve[3], keyA[1], 10, enciphered)
-# print(deciphered)
-    
 
 
 

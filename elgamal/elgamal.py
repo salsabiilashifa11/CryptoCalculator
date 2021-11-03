@@ -86,13 +86,5 @@ def elgamal_decrypt(ciphertext, x, p):
         result += chr((tup[1] * (modinv(tup[0]**x, p))) % p)
     return result    
 
-# key = generate_key(32)
-# pub = key[0]
-# pri = key[1]
 
-# enciphered = encrypt('shifa', pub[0], pub[1], pub[2])
-# deciphered = decrypt(enciphered, pri[0], pri[1])
-
-# print(enciphered)
-# print(deciphered)
 

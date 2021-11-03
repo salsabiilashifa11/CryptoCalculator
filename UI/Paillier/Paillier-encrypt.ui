@@ -641,11 +641,11 @@ color: rgb(116, 116, 118);</string>
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="messageOutput1">
+   <widget class="QLineEdit" name="messageOutput">
     <property name="geometry">
      <rect>
-      <x>880</x>
-      <y>560</y>
+      <x>310</x>
+      <y>570</y>
       <width>591</width>
       <height>181</height>
      </rect>
@@ -755,22 +755,6 @@ border-radius: 15px;
     </property>
     <property name="text">
      <string>Choose</string>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="messageOutput">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>600</y>
-      <width>521</width>
-      <height>191</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
-    </property>
-    <property name="lineWrapMode">
-     <enum>QPlainTextEdit::NoWrap</enum>
     </property>
    </widget>
   </widget>

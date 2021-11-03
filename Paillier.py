@@ -72,7 +72,7 @@ class Paillier:
             x = pow(block, lmd, pow(self.n, 2)) - 1
             result.append(((x // self.n) * self.miu) % self.n)
         
-        print(result[0])
+        # print(result[0])
         plaintext = block2pt(result, len(str(pow(self.n, 2)))//2)
         return plaintext
 
@@ -84,8 +84,10 @@ def main():
     pail.generateKeyPair()
     saveKeyPaillier(pail.n, pail.g, pail.miu, pail.lmd, 'keyPail')
     ct, cts = pail.encrypt(pt, pail.g)
-    # print(ct)
-    print(pail.decrypt(ct, pail.lmd, pail.miu, pail.n))
+    print(ct)
+    c = cipher2IntArr(cts, len(str(pow(pail.n, 2))))
+    print(c)
+    print(pail.decrypt(c, pail.lmd, pail.miu, pail.n))
 
 
 if __name__ == '__main__':

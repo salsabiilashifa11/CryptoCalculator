@@ -7,6 +7,7 @@ from Paillier import Paillier
 from ecc.ecc import *
 from elgamal.elgamal import *
 from keyUtil import *
+from textUtil import *
 import cv2
 
 #---------------------------------UTILITIES---------------------------------
@@ -164,7 +165,8 @@ class rsaEncryptScreen(QDialog):
             f.close()
 
     def getOutputPath(self):
-        self.outputPath = "Keys/" + self.KeyFileName.text() 
+        self.outputPathKey = "save/rsa/key/" + self.KeyFileName.text() 
+        self.outputPathCipher = "save/rsa/enc/" + self.KeyFileName.text() + '.txt'
 
     def runEncrypt(self):
         self.getMessage()
@@ -186,16 +188,20 @@ class rsaEncryptScreen(QDialog):
             print(Q)
             print(E)
             self.rsa.generateKeyPair(int(P), int(Q), int(E))
-
-        ct, cts = self.rsa.encrypt(bytes(self.message, 'utf-8'), self.rsa.e, self.rsa.n)
-
-        print(cts)
         
+        if self.fileInputMethod == 'Keyboard':
+            self.message = bytes(self.message, 'utf-8')
+
+        ct, cts = self.rsa.encrypt(self.message, self.rsa.e, self.rsa.n)
+        
+        f = open(self.outputPathCipher, 'w')
+        f.write(cts)
+        f.close()
 
         self.messageOutput.setText(cts)
         self.messageOutput.setReadOnly(True)
 
-        saveKeyRSA(self.rsa.e, self.rsa.n, self.rsa.d, self.outputPath)
+        saveKeyRSA(self.rsa.e, self.rsa.n, self.rsa.d, self.outputPathKey)
 
 
 
@@ -270,11 +276,12 @@ class rsaDecryptScreen(QDialog):
     def getCipher(self):
         if (self.fileInputMethod == "File"):
             msgPath = self.inputFileField.text()
-            f = open(msgPath, "rb")
-            self.cipher = (f.read())
+            f = open(msgPath, "r")
+            string = f.read()
+            self.cipher = string
             f.close()
         else:
-            self.message = self.inputKeyboardField.text()
+            self.cipher = self.inputKeyboardField.text()
 
     def getOutputPath(self):
         self.outputPath = "Keys/" + self.KeyFileName.text() 
@@ -303,12 +310,15 @@ class rsaDecryptScreen(QDialog):
             self.rsa.d = int(d)
             self.rsa.n = int(n)
 
+        
+
+        print(self.cipher)
         # Preprocess the cipher
-        cipher = ''
+        cipher = cipher2IntArr(str(self.cipher), (len(str(self.rsa.n))))
 
-        pt = self.rsa.decrypt(cipher, self.rsa.d, self.rsa.n)
+        pt = self.rsa.decrypt(cipher, int(self.rsa.d), int(self.rsa.n))
 
-        self.messageOutput.setText(pt)
+        self.messageOutput.setText(str(pt))
         self.messageOutput.setReadOnly(True)
 
 
@@ -429,7 +439,8 @@ class paillierEncryptScreen(QDialog):
             f.close()
 
     def getOutputPath(self):
-        self.outputPath = "Keys/" + self.KeyFileName.text()
+        self.outputPathKey = "save/paillier/key/" + self.KeyFileName.text()
+        self.outputPathCipher = "save/paillier/enc/" + self.KeyFileName.text() + '.txt'
 
     def runEncrypt(self):
         self.getMessage()
@@ -454,10 +465,14 @@ class paillierEncryptScreen(QDialog):
         
         ct, cts = self.Paillier.encrypt(self.message, self.Paillier.g)
 
+        f = open(self.outputPathCipher, 'w')
+        f.write(cts)
+        f.close()
+
         self.messageOutput.setText(cts)
         self.messageOutput.setReadOnly(True)
 
-        saveKeyPaillier(self.Paillier.n, self.Paillier.g, self.Paillier.miu, self.Paillier.lmd, self.outputPath)
+        saveKeyPaillier(self.Paillier.n, self.Paillier.g, self.Paillier.miu, self.Paillier.lmd, self.outputPathKey)
     
 
 class paillierDecryptScreen(QDialog):
@@ -529,8 +544,8 @@ class paillierDecryptScreen(QDialog):
     def getCipher(self):
         if (self.fileInputMethod == "File"):
             msgPath = self.inputFileField.text()
-            f = open(msgPath, "rb")
-            self.cipher = (f.read())
+            f = open(msgPath, "r")
+            self.cipher = f.read()
             f.close()
         else:
             self.message = self.inputKeyboardField.text()
@@ -541,7 +556,7 @@ class paillierDecryptScreen(QDialog):
     def getKey(self):
         if (self.keyInputMethod == "File"):
             keyPath = self.inputFileField_2.text()
-            f = open(keyPath, 'rb')
+            f = open(keyPath, 'r')
             self.key = f.read().split(' ')
             f.close()
 
@@ -565,10 +580,12 @@ class paillierDecryptScreen(QDialog):
             self.Paillier.lmd = int(l)
             self.Paillier.miu = int(m)
         
-        # Preprocess the cipher
-        cipher = ''
+        print(self.cipher)
 
-        pt = self.Paillier.decrypt(cipher, self.Paillier.lmd, self.Paillier.miu, self.Paillier.n)
+        # Preprocess the cipher
+        cipher = cipher2IntArr(self.cipher, len(str(pow(int(self.Paillier.n), 2))))
+        print(cipher)
+        pt = self.Paillier.decrypt(cipher, int(self.Paillier.lmd), int(self.Paillier.miu), int(self.Paillier.n))
 
         self.messageOutput.setText(pt)
         self.messageOutput.setReadOnly(True)
