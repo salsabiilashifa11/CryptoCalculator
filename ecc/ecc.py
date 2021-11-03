@@ -1,7 +1,7 @@
-from curve import generate_points, scalar_multiplication, point_addition
-from kolbitz import encode, decode
 import random
 from sympy import randprime
+import itertools
+from math import floor
 
 # #Get all required variables
 # a = int(input("Masukkan a: "))
@@ -19,6 +19,107 @@ from sympy import randprime
 # nb = int(input("Masukkan private key 2: "))
 # pb = scalar_multiplication(a, b, p, nb, baseP)
 
+#------------------CURVE------------------------
+def generate_points(a, b, p):
+    xlable = dict()
+    ylable = dict()
+
+    def lablex(x):
+        xlable.setdefault((x**3+a*x+b)%p, []).append(x)
+
+    def labley(y):
+        ylable.setdefault((y**2)%p, []).append(y)
+
+    for num in range(0,p):
+        lablex(num)
+        labley(num)
+
+    intersect = []
+    for item in xlable.keys():
+        if item in ylable:
+            tmp = list(itertools.product(xlable[item], ylable[item]))
+            intersect = intersect + tmp;
+    intersect = sorted(intersect)
+    return intersect
+
+# Extended Euclidean algorithm
+def extended_gcd(aa, bb):
+   lastremainder, remainder = abs(aa), abs(bb)
+   x, lastx, y, lasty = 0, 1, 1, 0
+   while remainder:
+       lastremainder, (quotient, remainder) = remainder, divmod(lastremainder, remainder)
+       x, lastx = lastx - quotient*x, x
+       y, lasty = lasty - quotient*y, y
+   return lastremainder, lastx * (-1 if aa < 0 else 1), lasty * (-1 if bb < 0 else 1)
+
+# calculate `modular inverse`
+def modinv(a, m):
+   g, x, y = extended_gcd(a, m)
+   if g != 1:
+       raise ValueError
+   return x % m
+
+def scalar_multiplication(a, b, p, factor, point):
+    x0 = point[0]
+    y0 = point[1]
+
+    for i in range(2, factor+1):
+        s = 0
+        if (x0 == point[0]):
+            s = ((3 * (point[0] ** 2) + a) * modinv(2 * point[1], p))%p
+        else:
+            s = ((y0 - point[1]) * modinv(x0 - point[0], p))%p
+    
+        x3 = (s ** 2 - point[0] - x0) % p
+        y3 = (s*(point[0] - x3) - point[1]) % p
+        (x0, y0) = (x3, y3)
+
+    return (x3, y3)
+
+
+def point_addition(p, A, P, Q):
+    z = 0 
+
+    if (P == z):
+        return Q
+    if (Q == z):
+        return P
+
+    if P[0] == Q[0]:
+        if (P == (Q[0], -Q[1] % p)):
+            return z
+        else:
+            m = ((3*pow(P[0], 2, p) + A)*pow(2*P[1], p-2, p)) % p
+    else:
+        m = (P[1] - Q[1])*pow(P[0] - Q[0], p-2, p) % p
+
+    x = (pow(m, 2, p) - P[0] - Q[0]) % p
+    y = (m*(P[0] - x) - P[1]) % p
+    return (x, y)
+
+#------------------KOLBITZ----------------------
+def encode(a, b, p, char, k):
+    m = ord(char)
+    x = m*k + 1
+    found = False
+    result = 0
+    
+    while (not found):
+        target_remainder = (x**3 + a*x + b) % p
+        for i in range(p):
+            if ((i**2) % p == target_remainder):
+                found = True
+                result = i
+                break
+        if (not found):
+            x += 1
+
+    return ((x, result))
+
+def decode(pair, k):
+    return floor((pair[0] - 1)/k)
+
+#-----------------MAIN ECC-------------------
 def curve_generator(nbits, filename):
     p = randprime(pow(2, nbits-1)+1, pow(2, nbits)-1)
     a = random.randint(2, pow(10, 2))
@@ -40,7 +141,7 @@ def key_generator(a, b, p, baseP, nbits, filename):
     return (pub, pri)
 
 def save_curve(a, b, p, baseP, fname):
-    fname = "../save/ecc/curve/" + fname
+    fname = "save/ecc/curve/" + fname + ".txt"
     with open(fname, "w") as f:
         f.write("%s\n" % a)
         f.write("%s\n" % b)
@@ -50,7 +151,7 @@ def save_curve(a, b, p, baseP, fname):
     f.close()
 
 def save_key(key, fname):
-    fname = "../save/ecc/key/" + fname
+    fname = "save/ecc/key/" + fname
     with open(fname, "w") as f:
         if (fname[-3:] == "pri"):
             f.write("%s" % key)
@@ -60,7 +161,6 @@ def save_key(key, fname):
     f.close()
 
 def save_enc(msg, fname):
-    fname = "../save/ecc/enc/" + fname + ".txt"
     with open(fname, "w") as f:
         for cipher in msg:
             for pair in cipher:
@@ -71,7 +171,6 @@ def save_enc(msg, fname):
 
 def read_enc(fname):
     msg = []
-    fname = "../save/ecc/enc/" + fname
     f = open(fname, "r")
     for line in f:
         content = line.rstrip().split()
@@ -80,8 +179,11 @@ def read_enc(fname):
         msg.append((tup1, tup2))
     return msg
 
+def read_plain(path):
+    f = open(path, "r")
+    return f.read()
+
 def read_curve(fname):
-    fname = "../save/ecc/curve/" + fname
     f = open(fname, "r")
     a = int(f.readline().rstrip())
     b = int(f.readline().rstrip())
@@ -91,7 +193,6 @@ def read_curve(fname):
     return (a, b, p, baseP)
 
 def read_key(fname):
-    fname = "../save/ecc/key/" + fname
     f = open(fname, "r")
     if (fname[-3:] == "pri"):
         key = int(f.readline().rstrip())
@@ -100,7 +201,6 @@ def read_key(fname):
         key = (int(point_content[0]), int(point_content[1]))
     return key
     
-
 
 # INI MULAI ENKRIPSINYA
 def encrypt(a, b, p, baseP, pb, enckey, plaintext):
@@ -142,11 +242,11 @@ def decrypt(a, b, p, baseP, nb, enckey, ciphertext):
 
         
 #READ FILE
-curve = read_curve("curve.txt")
-keyA = (read_key("keyA.pub"), read_key("keyA.pri"))
-enciphered = read_enc("save_test")
-deciphered = decrypt(curve[0], curve[1], curve[2], curve[3], keyA[1], 10, enciphered)
-print(deciphered)
+# curve = read_curve("curve.txt")
+# keyA = (read_key("keyA.pub"), read_key("keyA.pri"))
+# enciphered = read_enc("save_test")
+# deciphered = decrypt(curve[0], curve[1], curve[2], curve[3], keyA[1], 10, enciphered)
+# print(deciphered)
     
 
 

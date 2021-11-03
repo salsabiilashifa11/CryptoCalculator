@@ -4,6 +4,8 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QFileDialog
 from RSA import RSA
 from Paillier import Paillier
+from ecc.ecc import *
+from elgamal.elgamal import *
 from keyUtil import *
 import cv2
 
@@ -19,12 +21,18 @@ class HomeScreen(QDialog):
         loadUi("UI/main.ui", self)
 
         self.pushButton.clicked.connect(self.goToRSA)
-        self.pushButton_2.clicked.connect(self.goToImage)
+        self.pushButton_2.clicked.connect(self.goToElGamal)
         self.pushButton_3.clicked.connect(self.goToPaillier)
+        self.pushButton_4.clicked.connect(self.goToECC)
 
-    def goToImage(self):
-        image = ImageScreen()
+    def goToElGamal(self):
+        image = ElGamalScreen()
         widget.addWidget(image)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
+    def goToECC(self):
+        ecc = ECCScreen()
+        widget.addWidget(ecc)
         widget.setCurrentIndex(widget.currentIndex()+1)
 
     def goToPaillier(self):
@@ -151,7 +159,7 @@ class rsaEncryptScreen(QDialog):
     def getKey(self):
         if (self.keyInputMethod == "File"):
             keyPath = self.inputFileField_2.text()
-            f = open(keyPath, 'rb')
+            f = open(keyPath, 'r')
             self.key = f.read().split(' ')
             f.close()
 
@@ -168,18 +176,18 @@ class rsaEncryptScreen(QDialog):
         if (self.keyInputMethod == 'Random'):
             self.rsa.generateKeyPair()
         elif (self.keyInputMethod == 'File'):
-            self.rsa.e = self.key[0]
-            self.rsa.n = self.key[1]
+            self.rsa.e = int(self.key[0])
+            self.rsa.n = int(self.key[1])
         else:
-            P = self.Factor1KeyField.text()
-            Q = self.Factor2KeyField.text()
-            E = self.PublicKeyField.text()
+            P = int(self.Factor1KeyField.text())
+            Q = int(self.Factor2KeyField.text())
+            E = int(self.PublicKeyField.text())
             print(P)
             print(Q)
             print(E)
             self.rsa.generateKeyPair(int(P), int(Q), int(E))
 
-        ct, cts = self.rsa.encrypt(self.message, self.rsa.e, self.rsa.n)
+        ct, cts = self.rsa.encrypt(bytes(self.message, 'utf-8'), self.rsa.e, self.rsa.n)
 
         print(cts)
         
@@ -274,7 +282,7 @@ class rsaDecryptScreen(QDialog):
     def getKey(self):
         if (self.keyInputMethod == "File"):
             keyPath = self.inputFileField_2.text()
-            f = open(keyPath, 'rb')
+            f = open(keyPath, 'r')
             self.key = f.read().split(' ')
             f.close()
 
@@ -566,46 +574,63 @@ class paillierDecryptScreen(QDialog):
         self.messageOutput.setReadOnly(True)
 
 
-#---------------------------------RC4---------------------------------
+#---------------------------------ECC---------------------------------
 
-class RC4Screen(QDialog):
+class ECCScreen(QDialog):
     def __init__(self):
-        super(RC4Screen, self).__init__()
-        loadUi("UI/RC4/rc4-main.ui", self)
+        super(ECCScreen, self).__init__()
+        loadUi("UI/ECC/ECC-main.ui", self)
 
-        self.pushButton.clicked.connect(self.goToRC4Encrypt)
-        self.pushButton_2.clicked.connect(self.goToRC4Decrypt)
+        self.pushButton.clicked.connect(self.goToECCEncrypt)
+        self.pushButton_2.clicked.connect(self.goToECCDecrypt)
+        self.pushButton_3.clicked.connect(self.goToECCKeyGen)
         self.backButton.clicked.connect(goBack)
 
-    def goToRC4Encrypt(self):
-        rc1 = RC4EncryptScreen()
-        widget.addWidget(rc1)
+    def goToECCEncrypt(self):
+        ecc = ECCEncryptScreen()
+        widget.addWidget(ecc)
         widget.setCurrentIndex(widget.currentIndex() + 1)
 
-    def goToRC4Decrypt(self):
-        rc1 = RC4DecryptScreen()
-        widget.addWidget(rc1)
+    def goToECCDecrypt(self):
+        ecc = ECCDecryptScreen()
+        widget.addWidget(ecc)
         widget.setCurrentIndex(widget.currentIndex() + 1)
 
-class RC4EncryptScreen(QDialog):
+    def goToECCKeyGen(self):
+        ecc = ECCKeyGenScreen()
+        widget.addWidget(ecc)
+        widget.setCurrentIndex(widget.currentIndex() + 1)
+
+class ECCEncryptScreen(QDialog):
     def __init__(self):
-        super(RC4EncryptScreen, self).__init__()
-        loadUi("UI/RC4/rc4-encrypt.ui", self)
+        super(ECCEncryptScreen, self).__init__()
+        loadUi("UI/ECC/ECC-encrypt.ui", self)
         self.mode = "encrypt"
         self.message = ""
         self.outputPath = ""
         self.key = ""
+        self.curve = ""
 
         #actions
-        self.inputButton_1.toggled.connect(self.toggleInputButton1)
-        self.inputButton_2.toggled.connect(self.toggleInputButton2)
-        self.inputFileButton.clicked.connect(self.browseInput)
-        self.goButton.clicked.connect(self.runEncoding)
+        self.inputButton_1.toggled.connect(self.toggleInputButton1) #file message
+        self.inputButton_2.toggled.connect(self.toggleInputButton2) #keyboard message
+        self.messageFileButton.clicked.connect(self.browseInput) #browse message
+        self.curveEquationFileButton.clicked.connect(self.browseCurve)
+        self.publicKeyFileButton.clicked.connect(self.browseKey)
+        self.goButton.clicked.connect(self.runEncryption) #encrypt
         self.backButton.clicked.connect(goBack)
 
     def browseInput(self):
         f = QFileDialog.getOpenFileName(self, 'Open file', '~/shifa/Desktop')
         self.inputFileField.setText(f[0])
+
+    def browseCurve(self):
+        f = QFileDialog.getOpenFileName(self, 'Open file', '~/shifa/Desktop')
+        self.curveFileField.setText(f[0])
+
+    def browseKey(self):
+        f = QFileDialog.getOpenFileName(self, 'Open file', '~/shifa/Desktop')
+        self.keyFileField.setText(f[0])
 
     def toggleInputButton1(self): self.btnInputState(self.inputButton_1)
     def toggleInputButton2(self): self.btnInputState(self.inputButton_2)
@@ -614,56 +639,189 @@ class RC4EncryptScreen(QDialog):
         if b.text() == "File":
             if b.isChecked():
                 self.inputKeyboardField.setReadOnly(True)
-                self.inputFileButton.setEnabled(True)
+                self.messageFileButton.setEnabled(True)
                 self.fileInputMethod = "File"
                 self.inputKeyboardField.setText("")
         elif b.text() == "Keyboard":
             if b.isChecked():
                 self.inputKeyboardField.setReadOnly(False)
-                self.inputFileButton.setEnabled(False)
+                self.messageFileButton.setEnabled(False)
                 self.fileInputMethod = "Keyboard"
                 self.inputFileField.setText("")
+
+    def btn2InputState(self, b):
+        if b.text() == "File":
+            if b.isChecked():
+                self.curveEquationFileButton.setEnabled(True)
+                self.publicKeyFileButton.setEnabled(True)
+                self.paramInputMethod = "File"
 
     def getMessage(self):
         if (self.fileInputMethod == "File"):
             path = self.inputFileField.text()
-            self.message = readfile_bin(path)
+            f = open(path, "r")
+            self.message = f.read()
         else:
             self.message = self.inputKeyboardField.text()
+    
+    def getKey(self):
+        path = self.keyFileField.text()
+        self.key = read_key(path)
+
+    def getCurve(self):
+        path = self.curveFileField.text()
+        self.curve = read_curve(path)
+
+    def getK(self):
+        self.k = int(self.encodingKeyField.text())
 
     def getOutputPath(self):
-        self.outputPath = "output_encode/" + self.outputFileField.text() + "." + self.outputFormatField.text()
+        self.outputPathKey = "save/ecc/key/" + self.outputFileField.text() + ".pub"
+        self.outputPathCurve = "save/ecc/curve/" + self.outputFileField.text() + "-curve.txt" 
+        self.outputPathCipher = "save/ecc/enc/" + self.outputFileField.text() + "-cipher.txt" 
 
-    def runEncoding(self):
+    def runEncryption(self):
         self.getMessage()
+        self.getCurve()
+        self.getKey()
+        self.getK()
         self.getOutputPath()
-        self.key = self.stegoKeyField.text()
-        acquire_key(self.key)
-        result = encrypt_text(self.message)
-        writefile_bin(self.outputPath, result)
 
-        self.gotToResult()
+        print(self.curve)
+        print(self.key)
+        result = encrypt(self.curve[0], self.curve[1], self.curve[2], self.curve[3], self.key, self.k, self.message)
+        save_enc(result, self.outputPathCipher)
 
-    def gotToResult(self):
-        filename = self.outputFileField.text() + "." + self.outputFormatField.text()
-        result = RC4ResultScreen(self.mode, filename, "")
-        widget.addWidget(result)
-        widget.setCurrentIndex(widget.currentIndex() + 1)
+        printText = "%s" % (result,)
+        self.messageOutput.setText(printText)
 
-class RC4DecryptScreen(QDialog):
+        
+class ECCDecryptScreen(QDialog):
     def __init__(self):
-        super(RC4DecryptScreen, self).__init__()
-        loadUi("UI/RC4/rc4-decrypt.ui", self)
+        super(ECCDecryptScreen, self).__init__()
+        loadUi("UI/ECC/ECC-decrypt.ui", self)
         self.mode = "decrypt"
         self.message = ""
         self.outputPath = ""
         self.key = ""
 
         #actions
-        self.inputButton_1.toggled.connect(self.toggleInputButton1)
-        self.inputButton_2.toggled.connect(self.toggleInputButton2)
-        self.inputFileButton.clicked.connect(self.browseInput)
-        self.goButton.clicked.connect(self.runDecoding)
+        self.messageFileButton.clicked.connect(self.browseInput) #browse message
+        self.curveEquationFileButton.clicked.connect(self.browseCurve)
+        self.privateKeyFileButton.clicked.connect(self.browseKey)
+        self.goButton.clicked.connect(self.runDecryption) #decrypt
+        self.backButton.clicked.connect(goBack)
+
+    def browseInput(self):
+        f = QFileDialog.getOpenFileName(self, 'Open file', '~/shifa/Desktop')
+        self.inputFileField.setText(f[0])
+
+    def browseCurve(self):
+        f = QFileDialog.getOpenFileName(self, 'Open file', '~/shifa/Desktop')
+        self.curveFileField.setText(f[0])
+
+    def browseKey(self):
+        f = QFileDialog.getOpenFileName(self, 'Open file', '~/shifa/Desktop')
+        self.keyFileField.setText(f[0])
+
+    def getMessage(self):
+        self.message = read_enc(self.inputFileField.text())
+
+    def getKey(self):
+        path = self.keyFileField.text()
+        self.key = read_key(path)
+
+    def getCurve(self):
+        path = self.curveFileField.text()
+        self.curve = read_curve(path)
+
+    def getK(self):
+        self.k = int(self.encodingKeyField.text())
+
+    def runDecryption(self):
+        self.getMessage()
+        self.getCurve()
+        self.getKey()
+        self.getK()
+        
+        result = decrypt(self.curve[0], self.curve[1], self.curve[2], self.curve[3], self.key, self.k, self.message)
+        self.messageOutput.setText(result)
+
+class ECCKeyGenScreen(QDialog):
+    def __init__(self):
+        super(ECCKeyGenScreen, self).__init__()
+        loadUi("UI/ECC/ECC-keygen.ui", self)
+        self.mode = "encrypt"
+        self.message = ""
+        self.outputPath = ""
+        self.key = ""
+        self.curve = ""
+
+        #actions
+        self.curveEquationFileButton.clicked.connect(self.browseCurve)
+        self.goButton.clicked.connect(self.runGenerateKey) #generate key
+        self.goButton_2.clicked.connect(self.runGenerateCurve) #generate curve
+        self.backButton.clicked.connect(goBack)
+
+    def browseCurve(self):
+        f = QFileDialog.getOpenFileName(self, 'Open file', '~/shifa/Desktop')
+        self.curveFileField.setText(f[0])
+
+    def getCurve(self):
+        path = self.curveFileField.text()
+        self.curve = read_curve(path)
+
+    def runGenerateCurve(self):
+        path = self.outputCurveFileField.text()
+        curve_generator(16, path)
+    
+    def runGenerateKey(self):
+        path = self.outputKeyFileField.text()
+        self.getCurve()
+        key_generator(self.curve[0], self.curve[1], self.curve[2], self.curve[3], 8, path)
+
+#---------------------------------El Gamal---------------------------------
+
+class ElGamalScreen(QDialog):
+    def __init__(self):
+        super(ElGamalScreen, self).__init__()
+        loadUi("UI/ElGamal/ElGamal-main.ui", self)
+
+        self.pushButton.clicked.connect(self.goToElGamalEncrypt)
+        self.pushButton_2.clicked.connect(self.goToElGamalDecrypt)
+        self.pushButton_3.clicked.connect(self.goToElGamalKeyGen)
+        self.backButton.clicked.connect(goBack)
+
+    def goToElGamalEncrypt(self):
+        ecc = ElGamalEncryptScreen()
+        widget.addWidget(ecc)
+        widget.setCurrentIndex(widget.currentIndex() + 1)
+
+    def goToElGamalDecrypt(self):
+        ecc = ElGamalDecryptScreen()
+        widget.addWidget(ecc)
+        widget.setCurrentIndex(widget.currentIndex() + 1)
+
+    def goToElGamalKeyGen(self):
+        ecc = ElGamalKeyGenScreen()
+        widget.addWidget(ecc)
+        widget.setCurrentIndex(widget.currentIndex() + 1)
+
+class ElGamalEncryptScreen(QDialog):
+    def __init__(self):
+        super(ElGamalEncryptScreen, self).__init__()
+        loadUi("UI/ElGamal/ElGamal-encrypt.ui", self)
+        self.mode = "encrypt"
+        self.message = ""
+        self.outputPath = ""
+        self.key = ""
+        self.curve = ""
+
+        #actions
+        self.inputButton_1.toggled.connect(self.toggleInputButton1) #file message
+        self.inputButton_2.toggled.connect(self.toggleInputButton2) #keyboard message
+        self.messageFileButton.clicked.connect(self.browseInput) #browse message
+        self.goButton.clicked.connect(self.runEncryption) #encrypt
         self.backButton.clicked.connect(goBack)
 
     def browseInput(self):
@@ -677,56 +835,91 @@ class RC4DecryptScreen(QDialog):
         if b.text() == "File":
             if b.isChecked():
                 self.inputKeyboardField.setReadOnly(True)
-                self.inputFileButton.setEnabled(True)
+                self.messageFileButton.setEnabled(True)
                 self.fileInputMethod = "File"
                 self.inputKeyboardField.setText("")
         elif b.text() == "Keyboard":
             if b.isChecked():
                 self.inputKeyboardField.setReadOnly(False)
-                self.inputFileButton.setEnabled(False)
+                self.messageFileButton.setEnabled(False)
                 self.fileInputMethod = "Keyboard"
                 self.inputFileField.setText("")
 
     def getMessage(self):
         if (self.fileInputMethod == "File"):
             path = self.inputFileField.text()
-            self.message = readfile_bin(path)
+            f = open(path, "r")
+            self.message = f.read()
         else:
             self.message = self.inputKeyboardField.text()
+    
+    def getKey(self):
+        self.key = (int(self.yKeyField.text()), int(self.gKeyField.text()), int(self.pKeyField.text()))
 
     def getOutputPath(self):
-        self.outputPath = "output_decode/" + self.outputFileField.text() + "." + self.outputFormatField.text()
+        # self.outputPathKey = "save/ecc/key/" + self.outputFileField.text() + ".pub"
+        # self.outputPathCurve = "save/ecc/curve/" + self.outputFileField.text() + "-curve.txt" 
+        self.outputPathCipher = "save/elGamal/enc/" + self.outputFileField.text() + "-cipher.txt" 
 
-    def runDecoding(self):
+    def runEncryption(self):
         self.getMessage()
+        self.getKey()
         self.getOutputPath()
-        self.key = self.stegoKeyField.text()
-        acquire_key(self.key)
-        result = decrypt_text(self.message)
-        writefile_bin(self.outputPath, result)
 
-        self.gotToResult()
+        result = elgamal_encrypt(self.message, self.key[0], self.key[1], self.key[2])
+        elgamal_save_enc(result, self.outputPathCipher)
 
-    def gotToResult(self):
-        filename = self.outputFileField.text() + "." + self.outputFormatField.text()
-        result = RC4ResultScreen(self.mode, filename, "")
-        widget.addWidget(result)
-        widget.setCurrentIndex(widget.currentIndex() + 1)
-
-class RC4ResultScreen(QDialog):
-    def __init__(self, _mode, _resultFileName, _psnr):
-        super(RC4ResultScreen, self).__init__()
-        loadUi("UI/RC4/rc4-result.ui", self)
-        self.label.setText((_mode+"ed").capitalize())
-        self.fileNameLabel.setText(_resultFileName)
-        self.psnrLabel.setText(_psnr)
+        printText = "%s" % (result,)
+        self.messageOutput.setText(printText)
+        
+class ElGamalDecryptScreen(QDialog):
+    def __init__(self):
+        super(ElGamalDecryptScreen, self).__init__()
+        loadUi("UI/ElGamal/ElGamal-decrypt.ui", self)
+        self.mode = "decrypt"
+        self.message = ""
+        self.outputPath = ""
+        self.key = ""
 
         #actions
-        self.goButton.clicked.connect(self.goToHome)
+        self.messageFileButton.clicked.connect(self.browseInput) #browse message
+        self.goButton.clicked.connect(self.runDecryption) #decrypt
+        self.backButton.clicked.connect(goBack)
 
-    def goToHome(self):
-        for i in range(3):
-            goBack()
+    def browseInput(self):
+        f = QFileDialog.getOpenFileName(self, 'Open file', '~/shifa/Desktop')
+        self.inputFileField.setText(f[0])
+
+    def getMessage(self):
+        self.message = elgamal_read_enc(self.inputFileField.text())
+
+    def getKey(self):
+        self.key = (int(self.privateXField.text()), int(self.privatePField.text()))
+
+    def runDecryption(self):
+        self.getMessage()
+        self.getKey()
+        
+        result = elgamal_decrypt(self.message, self.key[0], self.key[1])
+        self.messageOutput.setText(result)
+
+class ElGamalKeyGenScreen(QDialog):
+    def __init__(self):
+        super(ElGamalKeyGenScreen, self).__init__()
+        loadUi("UI/ElGamal/ElGamal-keygen.ui", self)
+        self.mode = "encrypt"
+        self.message = ""
+        self.outputPath = ""
+        self.key = ""
+        self.curve = ""
+
+        #actions
+        self.goButton.clicked.connect(self.runGenerateKey) #generate key
+        self.backButton.clicked.connect(goBack)
+    
+    def runGenerateKey(self):
+        path = self.outputKeyFileField.text()
+        elgamal_generate_key(32, path)
 
 #main
 app = QApplication(sys.argv)

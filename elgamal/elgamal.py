@@ -18,7 +18,7 @@ def modinv(a, m):
        raise ValueError
    return x % m
 
-def generate_key(nbits):
+def elgamal_generate_key(nbits, path):
     p = randprime(pow(2, nbits-1)+1, pow(2, nbits)-1)
     g = random.randint(1, pow(10, 6))
     x = random.randint(1, pow(10, 6))
@@ -26,9 +26,52 @@ def generate_key(nbits):
     pub = (y, g, p)
     pri = (x, p)
 
+    elgamal_save_key(y, g, p, x, path)
     return (pub, pri)
 
-def encrypt(plaintext, y, g, p):
+def elgamal_save_key(y, g, p, x, path):
+    pubkey = "save/elGamal/key/" + path + ".pub"
+    prikey = "save/elGamal/key/" + path + ".pri"
+
+    with open(pubkey, "w") as f:
+        f.write("%s\n" % y)
+        f.write("%s\n" % g)
+        f.write("%s" % p)
+    f.close()
+
+    with open(prikey, "w") as r:
+        r.write("%s\n" % x)
+        r.write("%s" % p)
+    r.close()
+
+def elgamal_save_enc(msg, fname):
+    with open(fname, "w") as f:
+        for cipher in msg:
+            for element in cipher:
+                f.write("%s " % element)
+            f.write("\n")
+    f.close()
+
+def elgamal_read_enc(fname):
+    msg = []
+    f = open(fname, "r")
+    for line in f:
+        content = line.rstrip().split()
+        tup = (int(content[0]), int(content[1]))
+        msg.append(tup)
+    return msg
+
+def elgamal_read_key(fname):
+    f = open(fname, "r")
+    if (fname[-3:] == "pri"):
+        point_content = f.readline().rstrip().split()
+        key = (int(point_content[0]), int(point_content[1]))
+    else: #pub
+        point_content = f.readline().rstrip().split()
+        key = (int(point_content[0]), int(point_content[1]), int(point_content[2]))
+    return key
+
+def elgamal_encrypt(plaintext, y, g, p):
     result = []
     for char in plaintext:
         k = random.randint(1, pow(10, 4))
@@ -37,19 +80,19 @@ def encrypt(plaintext, y, g, p):
         result.append((a, b))
     return result 
 
-def decrypt(ciphertext, x, p):
+def elgamal_decrypt(ciphertext, x, p):
     result = ""
     for tup in ciphertext:
         result += chr((tup[1] * (modinv(tup[0]**x, p))) % p)
     return result    
 
-key = generate_key(32)
-pub = key[0]
-pri = key[1]
+# key = generate_key(32)
+# pub = key[0]
+# pri = key[1]
 
-enciphered = encrypt('shifa', pub[0], pub[1], pub[2])
-deciphered = decrypt(enciphered, pri[0], pri[1])
+# enciphered = encrypt('shifa', pub[0], pub[1], pub[2])
+# deciphered = decrypt(enciphered, pri[0], pri[1])
 
-print(enciphered)
-print(deciphered)
+# print(enciphered)
+# print(deciphered)
 
