@@ -60,7 +60,7 @@ def save_key(key, fname):
     f.close()
 
 def save_enc(msg, fname):
-    fname = "../save/ecc/enc/" + fname
+    fname = "../save/ecc/enc/" + fname + ".txt"
     with open(fname, "w") as f:
         for cipher in msg:
             for pair in cipher:
@@ -144,7 +144,7 @@ def decrypt(a, b, p, baseP, nb, enckey, ciphertext):
 #READ FILE
 curve = read_curve("curve.txt")
 keyA = (read_key("keyA.pub"), read_key("keyA.pri"))
-enciphered = read_enc("save_test.txt")
+enciphered = read_enc("save_test")
 deciphered = decrypt(curve[0], curve[1], curve[2], curve[3], keyA[1], 10, enciphered)
 print(deciphered)
     
